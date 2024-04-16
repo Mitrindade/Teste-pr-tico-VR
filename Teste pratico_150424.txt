@@ -1,0 +1,95 @@
+
+#Frontend teste automatizado para validar que um produto pode ser adicionado ao carrinho em nossa loja virtual
+
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+
+# Configurações
+url = "www.vr.com.br"
+produto = "NOME_DO_PRODUTO_PARA_TESTAR"
+tempo_espera = 10  # Tempo máximo de espera para elementos carregarem em segundos
+
+# Inicialização do WebDriver (certifique-se de ter o driver do navegador instalado)
+driver = webdriver.Chrome()  # Troque para o navegador que você está utilizando
+
+# Abre a página do produto
+driver.get(url)
+
+	from selenium import webdriver
+	from selenium.webdriver.common.by import By
+	from selenium.webdriver.support.ui import WebDriverWait
+	from selenium.webdriver.support import expected_conditions as EC
+
+
+    # Encontra o campo de busca e digita o nome do produto
+    search_box = WebDriverWait(driver, tempo_espera).until(
+        EC.presence_of_element_located((By.XPATH, "//input[@id='search']"))
+    )
+    search_box.send_keys(produto)
+    
+    # Clica no botão de busca
+    search_button = WebDriverWait(driver, tempo_espera).until(
+        EC.element_to_be_clickable((By.XPATH, "//button[@type='submit']"))
+    )
+    search_button.click()
+    
+    # Aguarda o resultado da busca e clica no produto
+    WebDriverWait(driver, tempo_espera).until(
+        EC.presence_of_element_located((By.XPATH, "//h2[contains(.,'" + produto + "')]"))
+    ).click()
+    
+    # Clica no botão para adicionar ao carrinho
+    add_to_cart_button = WebDriverWait(driver, tempo_espera).until(
+        EC.element_to_be_clickable((By.XPATH, "//button[contains(.,'Adicionar ao carrinho')]"))
+    )
+    add_to_cart_button.click()
+    
+    # Verifica se o produto foi adicionado com sucesso ao carrinho
+    WebDriverWait(driver, tempo_espera).until(
+        EC.presence_of_element_located((By.XPATH, "//div[contains(.,'Produto adicionado ao carrinho')]"))
+    )
+    
+    print("Teste passou: Produto adicionado ao carrinho com sucesso!")
+
+finally:
+    # Fecha o navegador
+    driver.quit()
+
+____________________________________________________________________________________________
+
+#Cenário de testes que consulta e exibe dados de um estabelecimento
+
+Feature: Consultar Estabelecimento
+
+        Scenario: Verificar informações sobre estabelecimentos"
+        Given que eu tenha acesso ao endpoint de consulta de estabelecimentos
+        When eu faço uma requisição GET para o endpoint
+        Then o JSON retornado deve conter a chave "typeOfEstablishment"
+        And eu imprimo aleatoriamente um tipo de estabelecimento
+		
+		
+____________________________________________________________________________________________
+		
+	require 'httparty'
+
+	Given("que eu tenha acesso ao endpoint de consulta de estabelecimentos") do
+	  @endpoint = "https://portal.vr.com.br/api-web/comum/enumerations/VRPAT"
+	end
+
+	When("eu faço uma requisição GET para o endpoint") do
+	  @response = HTTParty.get(@endpoint)
+	end
+
+	Then("o JSON retornado deve conter a chave {string}") do |chave|
+	  expect(@response.code).to eq(200) # Verifica se a resposta é bem-sucedida
+	  expect(JSON.parse(@response.body)).to have_key(chave)
+	end
+
+	And("eu imprimo aleatoriamente um tipo de estabelecimento") do
+	  tipos_de_estabelecimento = JSON.parse(@response.body)["typeOfEstablishment"]
+	  tipo_aleatorio = tipos_de_estabelecimento.sample
+	  puts "Tipo de estabelecimento aleatório: #{tipo_aleatorio}"
+	end
+			
