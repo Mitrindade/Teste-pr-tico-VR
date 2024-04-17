@@ -19,45 +19,44 @@ driver = webdriver.Chrome()  # Troque para o navegador que você está utilizand
 # Abre a página do produto
 driver.get(url)
 
-	from selenium import webdriver
-	from selenium.webdriver.common.by import By
-	from selenium.webdriver.support.ui import WebDriverWait
-	from selenium.webdriver.support import expected_conditions as EC
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
-
-    # Encontra o campo de busca e digita o nome do produto
-    search_box = WebDriverWait(driver, tempo_espera).until(
-        EC.presence_of_element_located((By.XPATH, "//input[@id='search']"))
-    )
-    search_box.send_keys(produto)
+   # Encontra o campo de busca e digita o nome do produto
+search_box = WebDriverWait(driver, tempo_espera).until(
+EC.presence_of_element_located((By.XPATH, "//input[@id='search']"))
+ )
+search_box.send_keys(produto)
     
     # Clica no botão de busca
-    search_button = WebDriverWait(driver, tempo_espera).until(
-        EC.element_to_be_clickable((By.XPATH, "//button[@type='submit']"))
-    )
-    search_button.click()
+search_button = WebDriverWait(driver, tempo_espera).until(
+EC.element_to_be_clickable((By.XPATH, "//button[@type='submit']"))
+ )
+search_button.click()
     
     # Aguarda o resultado da busca e clica no produto
-    WebDriverWait(driver, tempo_espera).until(
-        EC.presence_of_element_located((By.XPATH, "//h2[contains(.,'" + produto + "')]"))
-    ).click()
+WebDriverWait(driver, tempo_espera).until(
+EC.presence_of_element_located((By.XPATH, "//h2[contains(.,'" + produto + "')]"))
+ ).click()
     
     # Clica no botão para adicionar ao carrinho
-    add_to_cart_button = WebDriverWait(driver, tempo_espera).until(
-        EC.element_to_be_clickable((By.XPATH, "//button[contains(.,'Adicionar ao carrinho')]"))
-    )
-    add_to_cart_button.click()
+add_to_cart_button = WebDriverWait(driver, tempo_espera).until(
+EC.element_to_be_clickable((By.XPATH, "//button[contains(.,'Adicionar ao carrinho')]"))
+)
+add_to_cart_button.click()
     
     # Verifica se o produto foi adicionado com sucesso ao carrinho
-    WebDriverWait(driver, tempo_espera).until(
-        EC.presence_of_element_located((By.XPATH, "//div[contains(.,'Produto adicionado ao carrinho')]"))
-    )
+WebDriverWait(driver, tempo_espera).until(
+EC.presence_of_element_located((By.XPATH, "//div[contains(.,'Produto adicionado ao carrinho')]"))
+)
     
-    print("Teste passou: Produto adicionado ao carrinho com sucesso!")
+print("Teste passou: Produto adicionado ao carrinho com sucesso!")
 
 finally:
     # Fecha o navegador
-    driver.quit()
+driver.quit()
 
 ____________________________________________________________________________________________
 
